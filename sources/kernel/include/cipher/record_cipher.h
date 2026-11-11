@@ -12,21 +12,21 @@ enum class NCipher_Result : uint8_t {
     Nonce_Exhausted, // citac nonce vycerpan, nutne otevrit znovu
 };
 
+// Identifikatory sifer
+enum class NCipher_Suite : uint8_t {
+    ChaCha20_Poly1305 = 1,
+    Xor = 2,
+};
+
 // Popis sifry (konstantni a nezavisle na kanalu)
 struct TCipher_Info {
-    NCipher_Suite suite_id; // identifikator sifry (1 = ChaCha20-Poly1305, 2 = XOR)
+    NCipher_Suite suite_id; // identifikator sifry
     uint32_t key_len;       // delka klice v bajtech
     uint32_t nonce_len;     // delka nonce (prefix + citac)
     uint32_t tag_len;       // delka autentizacniho tagu
     uint32_t header_len;    // delka hlavicky zaznamu
     uint32_t max_plain;     // maximalni delka plaintextu v jednom zaznamu
     uint32_t context_size;  // kolik bajtu musi volajici alokovat pro kontext
-};
-
-// Identifikatory sifer
-enum class NCipher_Suite : uint8_t {
-    ChaCha20_Poly1305 = 1,
-    Xor = 2,
 };
 
 /**
