@@ -14,13 +14,13 @@ enum class NCipher_Result : uint8_t {
 
 // Popis sifry (konstantni a nezavisle na kanalu)
 struct TCipher_Info {
-    uint8_t suite_id;      // identifikator sifry (1 = ChaCha20-Poly1305, 2 = XOR)
-    uint32_t key_len;      // delka klice v bajtech
-    uint32_t nonce_len;    // delka nonce (prefix + citac)
-    uint32_t tag_len;      // delka autentizacniho tagu
-    uint32_t header_len;   // delka hlavicky zaznamu
-    uint32_t max_plain;    // maximalni delka plaintextu v jednom zaznamu
-    uint32_t context_size; // kolik bajtu musi volajici alokovat pro kontext
+    NCipher_Suite suite_id; // identifikator sifry (1 = ChaCha20-Poly1305, 2 = XOR)
+    uint32_t key_len;       // delka klice v bajtech
+    uint32_t nonce_len;     // delka nonce (prefix + citac)
+    uint32_t tag_len;       // delka autentizacniho tagu
+    uint32_t header_len;    // delka hlavicky zaznamu
+    uint32_t max_plain;     // maximalni delka plaintextu v jednom zaznamu
+    uint32_t context_size;  // kolik bajtu musi volajici alokovat pro kontext
 };
 
 // Identifikatory sifer
