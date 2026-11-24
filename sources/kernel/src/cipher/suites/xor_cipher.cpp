@@ -27,9 +27,33 @@ CXor_Cipher::CXor_Cipher()
         static_cast<uint32_t>(sizeof(TXor_Context))
     }) {}
 
-NCipher_Result CXor_Cipher::Init_Context(void *ctx, const uint8_t *key, const uint8_t *nonce_prefix) const {
-    // TODO: need to be implemented
-    return NCipher_Result::Bad_Format;
+NCipher_Result CXor_Cipher::Init_Context(void *ctx, const uint8_t *key, const uint32_t key_len, const uint8_t *nonce_prefix) const {
+    // validace parametru
+    if (ctx == nullptr || key == nullptr || nonce_prefix == nullptr) {
+        return NCipher_Result::Bad_Argument;
+    }
+
+    // validace delky klice
+    if (key_len != Key_Len) {
+        return NCipher_Result::Bad_Argument;
+    }
+
+    // create context
+    TXor_Context* c = static_cast<TXor_Context *>(ctx);
+
+    for (uint32_t i = 0; i < Key_Len; i++) {
+        c->key[i] = key[i];
+    }
+
+    for (uint32_t i = 0; i < Prefix_Len; i++) {
+        c->nonce_prefix[i] = nonce_prefix[i];
+    }
+
+    c->send_counter = 0;
+    c->last_counter = 0;
+    c->has_last = false;
+
+    return NCipher_Result::Ok;
 }
 
 NCipher_Result CXor_Cipher::Encrypt(void *ctx, const uint8_t *aad, uint32_t aad_len,

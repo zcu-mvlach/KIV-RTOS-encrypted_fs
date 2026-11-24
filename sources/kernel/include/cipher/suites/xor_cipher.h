@@ -6,7 +6,7 @@ class CXor_Cipher final : public IRecord_Cipher {
     public:
         CXor_Cipher();
 
-        virtual NCipher_Result Init_Context(void *ctx, const uint8_t *key, const uint8_t *nonce_prefix) const override;
+        virtual NCipher_Result Init_Context(void *ctx, const uint8_t *key, const uint32_t key_len, const uint8_t *nonce_prefix) const override;
 
         virtual NCipher_Result Encrypt(void *ctx, const uint8_t *aad, uint32_t aad_len,
                                        const uint8_t *plain, uint32_t plain_len,

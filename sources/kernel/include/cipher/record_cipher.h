@@ -65,10 +65,11 @@ class IRecord_Cipher {
          *
          * @param   ctx           Pamet pro kontext, po navratu inicializovana
          * @param   key           Klic o delce Info().key_len bajtu
+         * @param   key_len       Delka klice v bajtech 
          * @param   nonce_prefix  Prefix nonce (8 B); ma byt ruzny pro kazdeho zapisovatele
          * @return Ok, nebo Bad_Argument pri nullptr nebo nevyhovujicim klici
          */
-        virtual NCipher_Result Init_Context(void *ctx, const uint8_t *key, const uint8_t *nonce_prefix) const = 0;
+        virtual NCipher_Result Init_Context(void *ctx, const uint8_t *key, const uint32_t key_len, const uint8_t *nonce_prefix) const = 0;
 
         /**
          * @brief Zasifruje plaintext do jednoho zaznamu (hlavicka, nonce, data, tag)
