@@ -66,15 +66,14 @@ NCipher_Result CXor_Cipher::Encrypt(void *ctx, const uint8_t *aad, uint32_t aad_
 }
 
 NCipher_Result CXor_Cipher::Decrypt(void *ctx, const uint8_t *aad, uint32_t aad_len,
-            const uint8_t *rec, uint32_t rec_len,
-                                       uint8_t *plain, uint32_t &plain_len) const {
+                                     const uint8_t *rec, uint32_t rec_len,
+                                     uint8_t *plain, uint32_t &plain_len) const {
     // TODO: need to be implemented
     return NCipher_Result::Bad_Format;
 }
 
 NCipher_Result CXor_Cipher::Parse_Header(const uint8_t *hdr, uint32_t hdr_len, uint32_t &total_len) const {
-    // TODO: need to be implemented
-    return NCipher_Result::Bad_Format;
+    return Parse_Common_Header(hdr, hdr_len, total_len);
 }
 
 void CXor_Cipher::Destroy_Context(void *ctx) const {

@@ -51,6 +51,25 @@ class IRecord_Cipher {
          */
         IRecord_Cipher(const TCipher_Info &info) : mInfo(info) {}
 
+        /**
+         * @brief Spolecna implementace Parse_Header pro sifry se standardnim formatem hlavicky
+         *
+         * - Predpoklada hlavicku o delce Info().header_len, kde bajt 0 je identifikator sifry
+         *   (suite_id), bajt 1 jsou priznaky (flags) a bajty 2 az 3 jsou delka dat zaznamu
+         *   (len) v poradi little-endian. Celkova delka zaznamu se spocita jako
+         *   header_len + nonce_len + len + tag_len. 
+         * 
+         * - Sifra s jinym formatem hlavicky musi Parse_Header implementovat sama
+         *
+         * @param hdr Ukazatel na zacatek hlavicky zaznamu
+         * @param hdr_len Pocet dostupnych bajtu od hdr, musi byt alespon Info().header_len
+         * @param total_len Vystup: celkova delka zaznamu v bajtech (hlavicka, nonce, data, tag)
+         *                  Pri chybe je nastaveno na 0
+         * @return NCipher_Result::Ok pokud je hlavicka platna, Bad_Argument pri nullptr nebo
+         *         malo bajtech, Bad_Format pri cizim suite_id nebo prilis velke delce dat
+         */
+        NCipher_Result Parse_Common_Header(const uint8_t *hdr, uint32_t hdr_len, uint32_t &total_len) const;
+
     public:
         virtual ~IRecord_Cipher() = default;
 
