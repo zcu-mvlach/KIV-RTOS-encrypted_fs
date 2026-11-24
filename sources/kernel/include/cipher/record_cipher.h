@@ -2,7 +2,7 @@
 
 #include <hal/intdef.h>
 
-// Vysledek opearce sifroavni
+// Vysledek operace sifrovani
 enum class NCipher_Result : uint8_t {
     Ok = 0,
     Bad_Argument,    // spatny klic, buffer nebo delka zpravy
@@ -29,6 +29,10 @@ struct TCipher_Info {
     uint32_t context_size;  // kolik bajtu musi volajici alokovat pro kontext
 };
 
+// Konstanty spolecne pro sifry
+constexpr uint32_t Record_Header_Len = 4;   // delka hlavicky
+constexpr uint32_t Record_Max_Plain  = 64;  // maximalni delka plaintextu
+
 /**
  * @brief Rozhrani sifry pracujici po zaznamech
  * @note
@@ -41,7 +45,8 @@ class IRecord_Cipher {
 
     protected:
         /**
-         * @brief Vrati popis sifry (suite, delky klice, nonce, tagu, hlavicky, velikost kontextu).
+         * @brief Konstruktor, konkretni sifra v nem preda svuj popis
+         * @param info Popis sifry
          * @return Konstantni reference na popis
          */
         IRecord_Cipher(const TCipher_Info &info) : mInfo(info) {}
