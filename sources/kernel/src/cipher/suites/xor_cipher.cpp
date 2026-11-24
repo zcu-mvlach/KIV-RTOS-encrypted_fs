@@ -1,5 +1,7 @@
 #include <cipher/suites/xor_cipher.h>
 
+#include <cipher/cipher_utils.h>
+
 namespace {
     // Metadata XOR sifry
     constexpr uint32_t Key_Len      = 32;   // delka klice
@@ -76,5 +78,5 @@ NCipher_Result CXor_Cipher::Parse_Header(const uint8_t *hdr, uint32_t hdr_len, u
 }
 
 void CXor_Cipher::Destroy_Context(void *ctx) const {
-    // TODO: need to be implemented
+    Secure_Zero(ctx, static_cast<uint32_t>(sizeof(TXor_Context)));
 }
