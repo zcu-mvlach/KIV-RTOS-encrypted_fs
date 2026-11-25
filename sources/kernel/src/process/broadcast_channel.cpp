@@ -17,19 +17,25 @@ CBroadcast_Channel::~CBroadcast_Channel() {
 }
 
 void CBroadcast_Channel::Reset(uint32_t size) {
-    if (!mBuffer && size > 0) {
-        mBuffer = reinterpret_cast<char*>(sKernelMem.Alloc(size));
-    } else if (mBuffer && size == 0) {
-        sKernelMem.Free(mBuffer);
-        mBuffer = nullptr;
-    } else if (size != mSize) {
+    // buffer ma byt alokovany prave tehdy, kdyz je velikost > 0; mSize musi vzdy odpovidat mBuffer
+    const bool buffer_allocated = (mBuffer != nullptr);
+    const bool buffer_needed = (size > 0);
+    const bool size_matches = (size == mSize);
+
+    if (!size_matches || buffer_allocated != buffer_needed) {
         if (mBuffer) {
             sKernelMem.Free(mBuffer);
+            mBuffer = nullptr;
         }
 
         mSize = size;
         if (mSize > 0) {
             mBuffer = reinterpret_cast<char*>(sKernelMem.Alloc(mSize));
+
+            // pri selhani alokace nesmi zustat mSize vetsi nez skutecny buffer
+            if (!mBuffer) {
+                mSize = 0;
+            }
         }
     }
 
@@ -165,22 +171,24 @@ bool CBroadcast_Channel::Wait(uint32_t count) {
         Wait_Enqueue_Current();
         mMutex.Unlock();
         sProcessMgr.Block_Current_Process();
+        mMutex.Lock();
     }
 
+    mMutex.Unlock();
     return true;
 }
 
 bool CBroadcast_Channel::Try_Wait_All_Reserve(uint32_t count) {
+    mMutex.Lock();
 
-    // nic zatim nebylo zapsano = neni co cist a je nutne cekat
+    // nic zatim nebylo zapsano = neni co cist a je nutne cekat (kontrola pod zamkem, aby cetla konzistentni stav)
     if (mGeneration == Broadcast_No_Message) {
+        mMutex.Unlock();
         return false;
     }
 
     uint32_t current_pid = sProcessMgr.Get_Current_Process()->pid;
     TReader_Info* reader_info = nullptr;
-
-    mMutex.Lock();
 
     // Najdeme zaznam pro tento proces, nebo vytvorime novy
     for (uint32_t i = 0; i < mReader_Count; i++) {
