@@ -22,6 +22,15 @@ extern "C" unsigned int __oled_task_elf_len;
 extern "C" unsigned char __logger_task_elf[];
 extern "C" unsigned int __logger_task_elf_len;
 
+extern "C" unsigned char __demo_a_task_elf[];
+extern "C" unsigned int __demo_a_task_elf_len;
+
+extern "C" unsigned char __demo_b_task_elf[];
+extern "C" unsigned int __demo_b_task_elf_len;
+
+extern "C" unsigned char __demo_r_task_elf[];
+extern "C" unsigned int __demo_r_task_elf_len;
+
 extern "C" unsigned char __counter_task_elf[];
 extern "C" unsigned int __counter_task_elf_len;
 
@@ -40,6 +49,9 @@ extern "C" int _kernel_main(void) {
     sProcessMgr.Create_Process(__sos_task_elf, __sos_task_elf_len, false);
     sProcessMgr.Create_Process(__oled_task_elf, __oled_task_elf_len, false);
     sProcessMgr.Create_Process(__logger_task_elf, __logger_task_elf_len, false);
+    sProcessMgr.Create_Process(__demo_a_task_elf, __demo_a_task_elf_len, false);
+    sProcessMgr.Create_Process(__demo_b_task_elf, __demo_b_task_elf_len, false);
+    sProcessMgr.Create_Process(__demo_r_task_elf, __demo_r_task_elf_len, false);
     sProcessMgr.Create_Process(__counter_task_elf, __counter_task_elf_len, false);
     sProcessMgr.Create_Process(__tilt_task_elf, __tilt_task_elf_len, false);
 

@@ -64,3 +64,8 @@ ADD_USERSPACE_EXECUTABLE(oled_task oled_task/main.cpp)
 ADD_USERSPACE_EXECUTABLE(logger_task logger_task/main.cpp)
 ADD_USERSPACE_EXECUTABLE(counter_task counter_task/main.cpp)
 ADD_USERSPACE_EXECUTABLE(tilt_task tilt_task/main.cpp)
+
+# demo tasky pro sifrovany broadcast (krok 1: plaintext baseline)
+ADD_USERSPACE_EXECUTABLE(demo_a_task demo_a_task/main.cpp)
+ADD_USERSPACE_EXECUTABLE(demo_b_task demo_b_task/main.cpp)
+ADD_USERSPACE_EXECUTABLE(demo_r_task demo_r_task/main.cpp)

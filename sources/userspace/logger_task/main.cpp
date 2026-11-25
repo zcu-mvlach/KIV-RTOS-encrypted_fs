@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
     TUART_IOCtl_Params params;
     params.baud_rate = NUART_Baud_Rate::BR_115200;
     params.char_length = NUART_Char_Length::Char_8;
+    params.blocking_state = NUART_Blocking_State::Blocking;
     ioctl(uart_file, NIOCtl_Operation::Set_Params, &params);
 
     fputs(uart_file, "UART task starting!");
