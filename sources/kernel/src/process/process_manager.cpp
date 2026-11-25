@@ -360,7 +360,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
         case NSWI_Filesystem_Service::Read: {
             target.r0 = 0;
 
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
@@ -370,7 +370,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
         case NSWI_Filesystem_Service::Write: {
             target.r0 = 0;
 
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
@@ -378,7 +378,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
             break;
         }
         case NSWI_Filesystem_Service::Close: {
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
@@ -388,7 +388,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
             break;
         }
         case NSWI_Filesystem_Service::IOCtl: {
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
@@ -396,7 +396,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
             break;
         }
         case NSWI_Filesystem_Service::Notify: {
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
@@ -404,7 +404,7 @@ void CProcess_Manager::Handle_Filesystem_SWI(NSWI_Filesystem_Service svc_idx, ui
             break;
         }
         case NSWI_Filesystem_Service::Wait: {
-            if (r0 > Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
+            if (r0 >= Max_Process_Opened_Files || !mCurrent_Task_Node->task->opened_files[r0]) {
                 return;
             }
 
