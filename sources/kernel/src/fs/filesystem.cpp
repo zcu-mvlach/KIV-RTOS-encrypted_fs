@@ -138,12 +138,19 @@ IFile* CFilesystem::Open(const char* path, NFile_Open_Mode mode) {
     TFS_Tree_Node* node = &mRoot, *tmpNode = nullptr;
 
     while (mpPtr[0] != '\0') {
-        for (j = 0; j < MaxPathLength && mpPtr[j] != '\0'; j++) {
+        // nazev segmentu se vejde do tmpName i s ukoncovacim '\0'
+        for (j = 0; j < MaxFilenameLength - 1 && mpPtr[j] != '\0'; j++) {
             if (mpPtr[j] == ':' || mpPtr[j] == '/') {
                 break;
             }
 
             tmpName[j] = mpPtr[j];
+        }
+
+        // segment je delsi nez tmpName - nikdy nemuze odpovidat uzlu stromu, cesta je neplatna
+        const bool segment_ended = (mpPtr[j] == '\0' || mpPtr[j] == ':' || mpPtr[j] == '/');
+        if (!segment_ended) {
+            return nullptr;
         }
 
         tmpName[j] = '\0';
@@ -156,9 +163,13 @@ IFile* CFilesystem::Open(const char* path, NFile_Open_Mode mode) {
         }
 
         tmpNode = node->Find_Child(tmpName);
-        if (tmpNode) {
-            node = tmpNode;
+
+        // uzel neexistuje -> soubor neexistuje
+        if (!tmpNode) {
+            return nullptr;
         }
+
+        node = tmpNode;
 
         if (tmpNode->driver_idx != NoFilesystemDriver) {
             return gFS_Drivers[tmpNode->driver_idx].driver->Open_File(mpPtr, mode);
